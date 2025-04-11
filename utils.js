@@ -23,4 +23,32 @@ function emailValida(email){
     return false;
 }
 
-module.exports={emailValida};
+function passwordValida(password){
+    if(password.length<10)
+    {
+        return false;
+    }
+
+    let maiuscola=false;
+    let carattereSpeciale=false;
+    let caratteriSpeciciali="\",.&!$@"
+
+    for(let i=0;i<password.length;i++)
+    {
+        let char=password.charAt(i);
+        if(char.isUpperCase(c))
+        {
+            maiuscola=true;
+        }
+        if(caratteriSpeciciali.indexOf(c)!=-1)
+        {
+            caratteriSpeciale=true;
+        }
+        
+    }
+    return maiuscola && caratteriSpeciale;
+}
+
+
+
+module.exports={emailValida,passwordValida};
