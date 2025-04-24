@@ -13,6 +13,7 @@ function main()
     let password;
     let confermaPassword;
     let scelta;
+    let giorno,mese,anno;
     
     console.log("\nBenvenuto nel siestema per le credenzili di accesso \n")
     console.log("1)Accedi\n2)Registrati\n3)Recupera password\n4)Esci");
@@ -46,7 +47,9 @@ function main()
                 email=prompt("inserisci la tua email:");
                 password=prompt("inserisci la tua password:");
                 confermaPassword=prompt("Conferma la tua password:");
-            //}while(password!=confermaPassword||!emailValida(email)||!passwordValida(password)||email!=esci);
+                giorno=Number(prompt("inserisci il giorno di nascita:"));
+                mese=Number(prompt("inserisci il mese di nascita:"));
+                anno=Number(prompt("inserisci l'anno di nascita:"));
             if(!emailValida(email)||!passwordValida(password))
             {
                 console.log("Email o password non validi!");
@@ -65,13 +68,26 @@ function main()
                 utente.password=password;
                 utenti.push(utente);
                 console.log("Registrazione avvenuta con successo!");
+                
             }
             break;
         case 3:
             email=prompt("inserisci la tua email:");
             if(utenti.some(utente=utente.email==email))
             {
-                
+                console.log("Inserisci la differenza in giorni tra la data della nascita e la data corrente:");
+                let differenza=Number(prompt("---->"));
+                if(differenza==calcoloRecuperoPassword(giorno,mese,anno))
+                {
+                    console.log("Recupero password avvenuto con successo!");
+                    password=differenza.toString(16);
+                    console.log("La tua nuova password e': "+password);
+
+                }
+                else
+                {
+                    console.log("Recupero password fallito!");
+                }
             }
     }
 

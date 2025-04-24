@@ -49,6 +49,15 @@ function passwordValida(password){
     return maiuscola && caratteriSpeciale;
 }
 
+function calcoloRecuperoPassword(gionro,mese,anno)
+{
+    let dataAttuale=new Date();
+    let dataNascita=new Date(anno,mese-1,giorno);
+    let differenza=dataAttuale.getTime()-dataNasctita.getTime();
+    let giorniDifferenza=Math.floor(differenza/(1000*60*60*24));
+    return giorniDifferenza;
+}
+
 
 
 module.exports={emailValida,passwordValida};
