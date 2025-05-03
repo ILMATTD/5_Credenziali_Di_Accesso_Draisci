@@ -1,96 +1,94 @@
-"use strict"
+"use strict";
 
-const prompt=require("prompt-sync")();
+const prompt = require("prompt-sync")();
+const { emailValida, passwordValida, calcoloRecuperoPassword } = require("./utils.js");
 
-const {emailValida, passwordValida}=require("./utils.js");
+const utenti = [];
 
-const utenti=[];
-let utente={};
-
-function main()
+function main() 
 {
-    let email;
-    let password;
-    let confermaPassword;
     let scelta;
-    let giorno,mese,anno;
+    console.log("\nBenvenuto nel sistema per le credenziali di accesso\n");
+    do{
+    console.log("1) Accedi\n2) Registrati\n3) Recupera password\n4) Esci");
+
+    scelta = Number(prompt("----> "));
     
-    console.log("\nBenvenuto nel siestema per le credenzili di accesso \n")
-    console.log("1)Accedi\n2)Registrati\n3)Recupera password\n4)Esci");
 
-    scelta=Number(prompt("---->"));
-    switch(scelta)
-    {
+    
+    switch (scelta) {
         case 1:
-            
-                email=prompt("inserisci la tua email:");
-                password=prompt("inserisci la tua password:");
-            //}while(password!=confermaPassword||!emailValida(email)||!passwordValida(password)||utenti.some(utente=>utente.email==email&&utente.password==password));
-            if(!emailValida(email)||!passwordValida(password))
-            {
-                console.log("Email o password non validi!");
-            }
-            else
-            {
-                if(utenti.some(utente=>utente.email==email&&utente.password==password))
-                {
-                    console.log("Accesso effettutato con successo!");
-                }
-                else
-                {
-                    console.log("Email o password non validi!");
-                }
-            }
-            
-            break;
-        case 2:
-                email=prompt("inserisci la tua email:");
-                password=prompt("inserisci la tua password:");
-                confermaPassword=prompt("Conferma la tua password:");
-                giorno=Number(prompt("inserisci il giorno di nascita:"));
-                mese=Number(prompt("inserisci il mese di nascita:"));
-                anno=Number(prompt("inserisci l'anno di nascita:"));
-            if(!emailValida(email)||!passwordValida(password))
-            {
-                console.log("Email o password non validi!");
-            }   
-            else if(utenti.some(utente=>utente.email==email))
-            {
-                console.log("Email gia' registrata!");
-            }
-            else if(password!=confermaPassword)
-            {
-                console.log("Le password non coincidono!");
-            }
-            else
-            {
-                utente.email=email;
-                utente.password=password;
-                utenti.push(utente);
-                console.log("Registrazione avvenuta con successo!");
-                
-            }
-            break;
-        case 3:
-            email=prompt("inserisci la tua email:");
-            if(utenti.some(utente=utente.email==email))
-            {
-                console.log("Inserisci la differenza in giorni tra la data della nascita e la data corrente:");
-                let differenza=Number(prompt("---->"));
-                if(differenza==calcoloRecuperoPassword(giorno,mese,anno))
-                {
-                    console.log("Recupero password avvenuto con successo!");
-                    password=differenza.toString(16);
-                    console.log("La tua nuova password e': "+password);
+            let email=prompt("Inserisci la tua email: ");
+            let password=prompt("Inserisci la tua password: ");
 
+            if (!emailValida(email) || !passwordValida(password)) {
+                console.log("Email o password non validi!");
+            } else {
+                const utenteTrovato = utenti.find(u => u.email === email && u.password === password);
+                if (utenteTrovato) {
+                    console.log("Accesso effettuato con successo!");
+                } else {
+                    console.log("Email o password errati!");
                 }
-                else
-                {
+            }
+            break;
+
+        case 2:
+            let nuovaEmail = prompt("Inserisci la tua email: ");
+            let nuovaPassword = prompt("Inserisci la tua password: ");
+            let confermaPassword = prompt("Conferma la tua password: ");
+            let giorno = Number(prompt("Inserisci il giorno di nascita: "));
+            let mese = Number(prompt("Inserisci il mese di nascita: "));
+            let anno = Number(prompt("Inserisci l'anno di nascita: "));
+
+            if (!emailValida(nuovaEmail)||!passwordValida(nuovaPassword)) {
+                console.log("Email o password non validi!");
+            } else if (utenti.some(u=>u.email===nuovaEmail)) {
+                console.log("Email già registrata!");
+            } else if (nuovaPassword!== confermaPassword) {
+                console.log("Le password non coincidono!");
+            } else {
+                utenti.push({
+                    email: nuovaEmail,
+                    password: nuovaPassword,
+                    giorno,
+                    mese,
+                    anno
+                });
+                console.log("Registrazione avvenuta con successo!");
+            }
+            break;
+
+        case 3:
+            let emailRecupero=prompt("Inserisci la tua email: ");
+            let utenteRecupero=utenti.find(u=>u.email===emailRecupero);
+
+            if (utenteRecupero) {
+                console.log("Inserisci la differenza in giorni tra la data della nascita e la data corrente:");
+                let differenzaInserita=Number(prompt("----> "));
+                let differenzaCorretta=calcoloRecuperoPassword(utenteRecupero.giorno, utenteRecupero.mese, utenteRecupero.anno);
+
+                if (differenzaInserita===differenzaCorretta) {
+                    let nuovaPassword=differenzaInserita.toString(16);
+                    utenteRecupero.password=nuovaPassword;
+                    console.log("Recupero password avvenuto con successo!");
+                    console.log("La tua nuova password è: "+nuovaPassword);
+                } else {
                     console.log("Recupero password fallito!");
                 }
+            } else {
+                console.log("Email non trovata!");
             }
-    }
+            break;
 
+        case 4:
+            console.log("Uscita dal programma.");
+            break;
 
+        default:
+            console.log("Scelta non valida!");
+    }}while (scelta!=4);
+    console.log("Arrivederci!");
 }
+
 main();
