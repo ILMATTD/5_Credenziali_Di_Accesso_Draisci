@@ -26,7 +26,7 @@ function main()
     let scelta;
     console.log("\nBenvenuto nel sistema per le credenziali di accesso\n");
     do{
-    console.log("1) Accedi\n2) Registrati\n3) Recupera password\n4) Esci");
+    console.log("1) Accedi\n2) Registrati\n3) Recupera password\n4) Cancella credenziali\n5) Esci\n");
 
     scelta = Number(prompt("----> "));
     
@@ -98,6 +98,9 @@ function main()
             break;
 
         case 4:
+            cancellaCredenziale();
+            break;
+        case 5:
             console.log("Uscita dal programma.");
             break;
 

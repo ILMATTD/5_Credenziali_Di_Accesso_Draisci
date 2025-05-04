@@ -78,6 +78,30 @@ function calcoloRecuperoPassword(giorno,mese,anno)
     return Math.floor(differenza/(1000*60*60*24));
 }
 
+/**
+ * Cancella un utente dal sistema.
+ * 
+ * L'utente deve inserire la propria email e confermare la password per autorizzare la cancellazione.
+ * Se email e password corrispondono a un utente registrato, l'utente verrà rimosso dall'elenco.
+ * 
+ * @function cancellaCredenziale
+ * 
+ */
+function cancellaCredenziale() {
+    let emailDaCancellare = prompt("Inserisci l'email dell'utente da cancellare: ");
+    let passwordConferma = prompt("Conferma la password per sicurezza: ");
+
+    const indiceUtente = utenti.findIndex(u => u.email === emailDaCancellare && u.password === passwordConferma);
+
+    if (indiceUtente !== -1) {
+        utenti.splice(indiceUtente, 1);
+        console.log("Utente cancellato con successo.");
+    } else {
+        console.log("Utente non trovato o credenziali errate.");
+    }
+}
 
 
-module.exports={emailValida,passwordValida,calcoloRecuperoPassword};
+
+
+module.exports={emailValida,passwordValida,calcoloRecuperoPassword,cancellaCredenziale};
